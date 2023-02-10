@@ -32,6 +32,7 @@ import org.openmrs.Encounter;
 import org.openmrs.Form;
 import org.openmrs.Patient;
 import org.openmrs.api.AdministrationService;
+import org.openmrs.api.CachedConceptService;
 import org.openmrs.api.ConceptService;
 import org.openmrs.api.ConditionService;
 import org.openmrs.api.context.Context;
@@ -83,6 +84,9 @@ public class ConditionElementTest {
 	@Mock
 	private RadioButtonsWidget conditionStatusesWidget;
 	
+	@Mock
+	private CachedConceptService cachedConceptService;
+	
 	private Encounter encounter;
 	
 	@Before
@@ -93,6 +97,10 @@ public class ConditionElementTest {
 		when(Context.getMessageSourceService()).thenReturn(messageSourceService);
 		when(Context.getConceptService()).thenReturn(conceptService);
 		when(Context.getAdministrationService()).thenReturn(adminService);
+		when(Context.getService(CachedConceptService.class)).thenReturn(cachedConceptService);
+		
+		doAnswer(invocation -> conceptService.getConcept((Integer) invocation.getArguments()[0])).when(cachedConceptService)
+		        .getConcept(any(Integer.class));
 		
 		doAnswer(new Answer<Concept>() {
 			

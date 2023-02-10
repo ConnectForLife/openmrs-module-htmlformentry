@@ -50,17 +50,17 @@ public class DateWidget implements Widget {
 	public String jsDateFormat() {
 		String ret = dateFormat().toPattern();
 		if (ret.contains("yyyy"))
-			ret = ret.replaceAll("yyyy", "yy"); // jquery uses yy for 4-digit years
+			ret = ret.replace("yyyy", "yy"); // jquery uses yy for 4-digit years
 		else if (ret.contains("yy"))
-			ret = ret.replaceAll("yy", "y"); // jquery uses y for 2-digit years
+			ret = ret.replace("yy", "y"); // jquery uses y for 2-digit years
 		if (ret.contains("MMMM"))
-			ret = ret.replaceAll("MMMM", "MM"); // jquery uses MM for long month name 
+			ret = ret.replace("MMMM", "MM"); // jquery uses MM for long month name
 		else if (ret.contains("MMM"))
-			ret = ret.replaceAll("MMM", "M"); // jquery uses M for short month name 
+			ret = ret.replace("MMM", "M"); // jquery uses M for short month name
 		else if (ret.contains("MM"))
-			ret = ret.replaceAll("MM", "mm"); // jquery uses mm for 2-digit month
+			ret = ret.replace("MM", "mm"); // jquery uses mm for 2-digit month
 		else
-			ret = ret.replaceAll("M", "m"); // jquery uses m for month with no leading zero
+			ret = ret.replace("M", "m"); // jquery uses m for month with no leading zero
 		return ret;
 	}
 	
@@ -92,24 +92,25 @@ public class DateWidget implements Widget {
 			}
 			sb.append("<input type=\"hidden\" name=\"").append(fieldName).append("\" id=\"").append(fieldName).append("\"");
 			if (onChangeFunction != null) {
-				sb.append(" onChange=\"" + onChangeFunction + "\" ");
+				sb.append(" onChange=\"").append(onChangeFunction).append("\" ");
 			}
 			if (hidden && initialValue != null) {
 				// set the value here, since it won't be set by the ui widget
-				sb.append(" value=\"" + new SimpleDateFormat("yyyy-MM-dd").format(initialValue) + "\"");
+				sb.append(" value=\"").append(new SimpleDateFormat("yyyy-MM-dd").format(initialValue)).append("\"");
 			}
 			sb.append(" />");
 			
 			if (!hidden) {
 				if ("true".equals(
 				    Context.getAdministrationService().getGlobalProperty(HtmlFormEntryConstants.GP_SHOW_DATE_FORMAT))) {
-					sb.append(" (" + dateFormat().toLocalizedPattern().toLowerCase() + ")");
+					sb.append(" (").append(dateFormat().toLocalizedPattern().toLowerCase()).append(")");
 				}
 				
-				sb.append("<script>setupDatePicker('" + jsDateFormat() + "', '" + getYearsRange() + "','"
-				        + getLocaleForJquery() + "', '#" + fieldName + "-display', '#" + fieldName + "'");
+				sb.append("<script>setupDatePicker('").append(jsDateFormat()).append("', '").append(getYearsRange())
+				        .append("','").append(getLocaleForJquery()).append("', '#").append(fieldName).append("-display', '#")
+				        .append(fieldName).append("'");
 				if (initialValue != null)
-					sb.append(", '" + new SimpleDateFormat("yyyy-MM-dd").format(initialValue) + "'");
+					sb.append(", '").append(new SimpleDateFormat("yyyy-MM-dd").format(initialValue)).append("'");
 				sb.append(")</script>");
 			}
 			return sb.toString();
@@ -119,8 +120,7 @@ public class DateWidget implements Widget {
 	@Override
 	public Date getValue(FormEntryContext context, HttpServletRequest request) {
 		try {
-			Date d = (Date) HtmlFormEntryUtil.getParameterAsType(request, context.getFieldName(this), Date.class);
-			return d;
+			return (Date) HtmlFormEntryUtil.getParameterAsType(request, context.getFieldName(this), Date.class);
 		}
 		catch (Exception ex) {
 			throw new IllegalArgumentException("Illegal value");

@@ -3,6 +3,7 @@ package org.openmrs.module.htmlformentry;
 import java.util.Collection;
 import java.util.Date;
 
+import net.sf.ehcache.CacheManager;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,14 +15,19 @@ import org.openmrs.module.metadatamapping.MetadataSource;
 import org.openmrs.module.metadatamapping.MetadataTermMapping;
 import org.openmrs.module.metadatamapping.api.MetadataMappingService;
 import org.openmrs.test.Verifies;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class HtmlFormExporterTest extends BaseHtmlFormEntryTest {
 	
 	private static Module module = new Module("metadatamapping", "metadatamapping", "packageName", "author", "desc",
 	        "1.3.4");
 	
+	@Autowired
+	private CacheManager cacheManager;
+	
 	@Before
 	public void setupDatabase() throws Exception {
+		cacheManager.clearAll();
 		executeVersionedDataSet("org/openmrs/module/htmlformentry/data/RegressionTest-data-openmrs-2.1.xml");
 	}
 	

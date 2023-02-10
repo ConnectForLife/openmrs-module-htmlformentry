@@ -16,7 +16,7 @@
 	<updateURL>https://modules.openmrs.org/modules/download/@MODULE_ID@/update.rdf</updateURL>
 	<!-- /Base Module Properties -->
 
-	<require_version>${openMRSVersion}</require_version>
+	<require_version>2.3.0</require_version>
 
 	<aware_of_modules>
 	    <aware_of_module>org.openmrs.module.legacyui</aware_of_module>

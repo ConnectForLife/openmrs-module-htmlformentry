@@ -82,6 +82,7 @@ import org.openmrs.ProgramWorkflowState;
 import org.openmrs.Provider;
 import org.openmrs.User;
 import org.openmrs.api.APIException;
+import org.openmrs.api.CachedConceptService;
 import org.openmrs.api.ConceptNameType;
 import org.openmrs.api.context.Context;
 import org.openmrs.api.db.hibernate.HibernateUtil;
@@ -852,7 +853,7 @@ public class HtmlFormEntryUtil {
 			// see if this is a parseable int; if so, try looking up concept by id
 			try { //handle integer: id
 				int conceptId = Integer.parseInt(id);
-				cpt = Context.getConceptService().getConcept(conceptId);
+				cpt = Context.getService(CachedConceptService.class).getConcept(conceptId);
 				
 				if (cpt != null) {
 					return cpt;
@@ -873,7 +874,7 @@ public class HtmlFormEntryUtil {
 			
 			// handle uuid id: "a3e1302b-74bf-11df-9768-17cfc9833272", if the id matches a uuid format
 			if (isValidUuidFormat(id)) {
-				cpt = Context.getConceptService().getConceptByUuid(id);
+				cpt = Context.getService(CachedConceptService.class).getConceptByUuid(id);
 			}
 			// finally, if input contains at least one period handle recursively as a code constant
 			else if (id.contains(".")) {

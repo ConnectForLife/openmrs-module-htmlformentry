@@ -2,18 +2,24 @@ package org.openmrs.module.htmlformentry;
 
 import java.util.Map;
 
+import net.sf.ehcache.CacheManager;
 import org.junit.Before;
 import org.junit.Test;
 import org.openmrs.Encounter;
 import org.openmrs.GlobalProperty;
 import org.openmrs.Patient;
 import org.openmrs.api.context.Context;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockHttpServletRequest;
 
 public class EncounterVoidedTagTest extends BaseHtmlFormEntryTest {
 	
+	@Autowired
+	private CacheManager cacheManager;
+	
 	@Before
 	public void loadConcepts() throws Exception {
+		cacheManager.clearAll();
 		executeVersionedDataSet("org/openmrs/module/htmlformentry/data/RegressionTest-data-openmrs-2.1.xml");
 	}
 	
